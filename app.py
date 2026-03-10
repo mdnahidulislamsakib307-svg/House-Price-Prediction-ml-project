@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[68]:
+# In[96]:
 
 
 import numpy as np 
@@ -20,43 +20,43 @@ import joblib
 import streamlit as st
 
 
-# In[69]:
+# In[97]:
 
 
-df = pd.read_csv("C://Users//USER-11//world project 2//kc_house_data.csv")
+df = pd.read_csv("kc_house_data.csv")
 
 
-# In[70]:
+# In[98]:
 
 
 df.shape
 
 
-# In[71]:
+# In[99]:
 
 
 df.head()
 
 
-# In[72]:
+# In[100]:
 
 
 df['condition'].mean()
 
 
-# In[73]:
+# In[101]:
 
 
 df.isnull().sum()
 
 
-# In[74]:
+# In[102]:
 
 
 df.dtypes
 
 
-# In[75]:
+# In[103]:
 
 
 plt.figure(figsize=(10, 6))
@@ -69,7 +69,7 @@ plt.savefig('visual_bedroom_count.png')
 plt.show()
 
 
-# In[76]:
+# In[104]:
 
 
 plt.figure(figsize=(10, 6))
@@ -82,7 +82,7 @@ plt.savefig('visual_price_bedroom.png')
 plt.show()
 
 
-# In[77]:
+# In[105]:
 
 
 plt.figure(figsize=(10, 6))
@@ -96,7 +96,7 @@ plt.savefig('visual_price_grade.png')
 plt.show()
 
 
-# In[78]:
+# In[106]:
 
 
 numeric_df = df.select_dtypes(include=['float64', 'int64'])
@@ -108,26 +108,26 @@ plt.savefig('Correlation Heatmap of House Features')
 plt.show()
 
 
-# In[79]:
+# In[107]:
 
 
 x = df.drop(['id','date','floors','waterfront','view','sqft_lot','sqft_above','sqft_basement','yr_renovated','sqft_living15','sqft_lot15','price'],axis=1)
 y = df['price']
 
 
-# In[80]:
+# In[108]:
 
 
 numerical_cols = x.select_dtypes(include=['int64','float64']).columns.tolist()
 
 
-# In[81]:
+# In[109]:
 
 
 categorical_cols = x.select_dtypes(include=['object']).columns.tolist()
 
 
-# In[82]:
+# In[110]:
 
 
 numerical_transformer= Pipeline (steps=[
@@ -136,7 +136,7 @@ numerical_transformer= Pipeline (steps=[
 ])
 
 
-# In[83]:
+# In[111]:
 
 
 categorical_transformer = Pipeline(steps=[
@@ -145,7 +145,7 @@ categorical_transformer = Pipeline(steps=[
 ])
 
 
-# In[84]:
+# In[112]:
 
 
 preprocessor =ColumnTransformer(transformers=[
@@ -154,13 +154,13 @@ preprocessor =ColumnTransformer(transformers=[
 ])
 
 
-# In[85]:
+# In[113]:
 
 
 X_train,X_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42)
 
 
-# In[86]:
+# In[114]:
 
 
 model =Pipeline(steps=[
@@ -168,13 +168,13 @@ model =Pipeline(steps=[
 ])
 
 
-# In[87]:
+# In[115]:
 
 
 model.fit(X_train,y_train)
 
 
-# In[88]:
+# In[116]:
 
 
 y_pred = model.predict(X_test)
@@ -182,7 +182,7 @@ y_pred = model.predict(X_test)
 print(f'Accuracy:{r2_score(y_pred,y_test)*100:.2f}')
 
 
-# In[89]:
+# In[117]:
 
 
 model2 = Pipeline(steps=[
@@ -190,13 +190,13 @@ model2 = Pipeline(steps=[
 ])
 
 
-# In[90]:
+# In[118]:
 
 
 model2.fit(X_train,y_train)
 
 
-# In[91]:
+# In[119]:
 
 
 y_pred2 =model2.predict(X_test)
@@ -204,13 +204,13 @@ y_pred2 =model2.predict(X_test)
 print(f'Accuracy:{r2_score(y_pred2,y_test)*100:.2f}')
 
 
-# In[92]:
+# In[120]:
 
 
 joblib.dump(model2,'randomforestregressor.pkl')
 
 
-# In[93]:
+# In[121]:
 
 
 load=joblib.load('randomforestregressor.pkl')
@@ -241,7 +241,7 @@ if st.button('predict'):
         
 
 
-# In[94]:
+# In[123]:
 
 
 # app.py
@@ -298,6 +298,12 @@ def predict_price(features: HouseFeatures):
     
     # Return prediction
     return {"predicted_price": float(prediction[0])}
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
